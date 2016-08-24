@@ -39,7 +39,7 @@ before_install:
   - sudo ruby-switch --set ruby2.3
   - gem install sass
 install:
-  - pip install selenium==2.48
+  - pip install selenium
   - pip install -e .
   - pip install coveralls
 before_script:
