@@ -1,4 +1,5 @@
 language: python
+sudo: required
 python:
   - 2.7
 env:
@@ -31,6 +32,11 @@ matrix:
       env: SELENIUM_WEBDRIVER=default
   fast_finish: true
 before_install:
+  # sass requires ruby 2
+  - sudo apt-add-repository -y ppa:brightbox/ruby-ng
+  - sudo apt-get update -qq
+  - sudo apt-get install ruby2.3 ruby-switch -y
+  - sudo ruby-switch --set ruby2.3
   - gem install sass
 install:
   - pip install -e .
@@ -39,6 +45,9 @@ before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3
+  - pip install "selenium>=2.48,< 2.49"
+  - pip install django-selenium-clean
+  - python example_project/manage.py collectstatic --noinput --settings test_settings
 script:
   - python setup.py test
 after_success:
